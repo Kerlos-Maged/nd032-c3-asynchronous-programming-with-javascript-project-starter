@@ -128,13 +128,14 @@ async function runCountdown() {
 		let timer = 3
 
 		return new Promise(resolve => {
-			// TODO - use Javascript's built in setInterval method to count down once per second
-
-			// run this DOM manipulation to decrement the countdown for the user
-			document.getElementById('big-numbers').innerHTML = --timer
-
-			// TODO - if the countdown is done, clear the interval, resolve the promise, and return
-
+			const runCountdownInterval = setInterval(() => {
+				if (timer === 0) {
+					clearInterval(runCountdownInterval);
+					resolve();
+					return;
+				}
+				document.getElementById('big-numbers').innerHTML = --timer
+			}, 1000) // 1000 milisecs = 1sec
 		})
 	} catch(error) {
 		console.log(error);
