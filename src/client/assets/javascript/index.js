@@ -15,8 +15,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 async function onPageLoad() {
 	try {
-		const [tracks, racers] = await Promise.all([getTracks(), 	getRacers()]);
-		
+		const [tracks, racers] = await Promise.all([getTracks(), 	getRacers()]); // so both getTracks and getRacers will render at the same time		
 		const htmlForTracks = renderTrackCards(tracks);
 		renderAt('#tracks', htmlForTracks);
 		
@@ -182,7 +181,7 @@ function handleAccelerate() {
 			console.log('accelerated');
 		})
 		.catch(err => {
-			console.warn('Problem with getTracks request::' , err);
+			console.warn('Problem with handleAccelerate request::' , err);
 		});
 }
 
@@ -211,9 +210,9 @@ function renderRacerCard(racer) {
 	return `
 		<li class="card podracer" id="${id}">
 			<h3>${driver_name}</h3>
-			<p>${top_speed}</p>
-			<p>${acceleration}</p>
-			<p>${handling}</p>
+			<p>Top Speed: ${top_speed}</p>
+			<p>Acceleration: ${acceleration}</p>
+			<p>handling: ${handling}</p>
 		</li>
 	`
 }
@@ -252,7 +251,6 @@ function renderCountdown(count) {
 }
 
 function renderRaceStartView(track, racers) {
-	console.log(track.name);
 	return `
 		<header>
 			<h1>Race: ${track.name}</h1>
