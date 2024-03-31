@@ -15,17 +15,14 @@ document.addEventListener("DOMContentLoaded", function() {
 
 async function onPageLoad() {
 	try {
-		getTracks()
-			.then(tracks => {
-				const html = renderTrackCards(tracks)
-				renderAt('#tracks', html)
-			})
+		const [tracks, racers] = await Promise.all([getTracks(), 	getRacers()]);
+		
+		const htmlForTracks = renderTrackCards(tracks);
+		renderAt('#tracks', htmlForTracks);
+		
+		const htmlForRacers = renderRacerCars(racers);		
+		renderAt('#racers', htmlForRacers);
 
-		getRacers()
-			.then((racers) => {
-				const html = renderRacerCars(racers)
-				renderAt('#racers', html)
-			})
 	} catch(error) {
 		console.log("Problem getting tracks and racers ::", error.message)
 		console.error(error)
@@ -321,11 +318,25 @@ function defaultFetchOpts() {
 // TODO - Make a fetch call (with error handling!) to each of the following API endpoints 
 
 function getTracks() {
-	// GET request to `${SERVER}/api/tracks`
+	return (
+		fetch (`${SERVER}/api/tracks`, {
+			...defaultFetchOpts(), // default fetch options
+			method: 'GET',  //  by default request is GET 
+		})
+		.then(res => res.json())
+		.catch(err =>	console.log(`Problem with getTracks request:: ${err}`))
+	)
 }
 
 function getRacers() {
-	// GET request to `${SERVER}/api/cars`
+	return (
+		fetch (`${SERVER}/api/cars`, {
+			...defaultFetchOpts(), // default fetch options
+			method: 'GET',  //  by default request is GET 
+		})
+		.then(res => res.json())
+		.catch(err =>	console.log(`Problem with getRacers request:: ${err}`))
+	)
 }
 
 function createRace(player_id, track_id) {
