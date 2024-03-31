@@ -327,8 +327,6 @@ function defaultFetchOpts() {
 	}
 }
 
-// TODO - Make a fetch call (with error handling!) to each of the following API endpoints 
-
 function getTracks() {
 	return (
 		fetch (`${SERVER}/api/tracks`, {
@@ -367,11 +365,20 @@ function createRace(player_id, track_id) {
 }
 
 function getRace(id) {
-	// GET request to `${SERVER}/api/races/${id}`
+	const newRaceId = parseInt(id) - 1; // to convert it to num 
+	return (
+		fetch(`${SERVER}/api/races/${newRaceId}`, {
+			...defaultFetchOpts(),
+			method: "GET"
+		})
+		.then(res => res.json())
+		.catch(err => console.log("Problem with getRace request::", err))
+	)
 }
 
 function startRace(id) {
-	return fetch(`${SERVER}/api/races/${id}/start`, {
+	const newRaceId = parseInt(id) - 1; // to convert it to num 
+	return fetch(`${SERVER}/api/races/${newRaceId}/start`, {
 		method: 'POST',
 		...defaultFetchOpts(),
 	})
